@@ -1,20 +1,10 @@
-import localData from '$lib/data.json';
-
 function isMirror(host) {
 	return host === 'mirror.explore.prgblockweek.com';
 }
 
 export async function load(entry = '23', host = null) {
-	let data = null;
-
-	if (host === 'localhost') {
-		data = localData;
-	} else {
-		const resp = await fetch(
-			`https://${isMirror(host) ? 'mirror.' : ''}data.prgblockweek.com/${entry}/index.json`
-		);
-		data = await resp.json();
-	}
+	const resp = await fetch(`https://advision-group.github.io/blockchain-week-data/23/index.json`);
+	const data = await resp.json();
 	data.events.sort((a, b) => ((a.attendees || 0) < (b.attendees || 0) ? 1 : -1));
 	//console.log(data.events)
 	data.speakers = [];
@@ -29,9 +19,9 @@ export async function load(entry = '23', host = null) {
 	return data;
 }
 
-export async function loadSchema(host) {
+export async function loadSchema() {
 	const resp = await fetch(
-		`https://${isMirror(host) ? 'mirror.' : ''}data.prgblockweek.com/schema/1/bundle.json`
+		`https://advision-group.github.io/blockchain-week-data/schema/1/bundle.json`
 	);
 	return resp.json();
 }
